@@ -3,30 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dosha Test</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Dosha-Test</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <aside class="sidebar">
-            <h2>Dosha Test</h2>
+            <h2>Fragenübersicht</h2>
             <ul id="question-list"></ul>
         </aside>
-        <main class="test-container">
-            <section id="intro">
-                <h1>Finde dein Dosha</h1>
-                <p>Beantworte die folgenden Fragen, um herauszufinden, welches Dosha am besten zu dir passt.</p>
-                <button onclick="startTest()">Test starten</button>
-            </section>
-            <section id="quiz" style="display: none;">
-                <h2 id="question-text"></h2>
-                <div id="answers"></div>
-                <button onclick="nextQuestion()">Weiter</button>
-            </section>
-            <section id="result" style="display: none;">
-                <h2>Dein Dosha-Typ:</h2>
-                <p id="dosha-result"></p>
-            </section>
+        <main class="content">
+            <div id="intro">
+                <h1>Dosha-Test</h1>
+                <p>Finde heraus, welches Dosha bei dir dominiert. Beantworte die folgenden Fragen und erhalte dein Ergebnis.</p>
+                <button id="start-test">Test starten</button>
+            </div>
+            <div id="question-container" class="hidden">
+                <h2 id="question-title"></h2>
+                <div id="answer-buttons"></div>
+                <button id="next-question" class="hidden">Weiter</button>
+            </div>
+            <div id="result-container" class="hidden">
+                <h2>Dein Dosha-Ergebnis</h2>
+                <p id="result-text"></p>
+            </div>
         </main>
     </div>
     <script src="script.js"></script>
