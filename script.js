@@ -1,45 +1,78 @@
 const questions = [
-    { question: "Wie ist dein Körperbau?", answers: ["Schlank (va)", "Muskulös (pi)", "Stark & robust (ka)"], type: ["va", "pi", "ka"] },
-    { question: "Wie ist dein Energielevel?", answers: ["Unbeständig (va)", "Mittelmäßig (pi)", "Stabil (ka)"], type: ["va", "pi", "ka"] },
-    { question: "Wie reagierst du auf Stress?", answers: ["Ängstlich (va)", "Wütend (pi)", "Gelassen (ka)"], type: ["va", "pi", "ka"] },
+    { 
+        question: "Wie ist deine Körperstruktur?", 
+        answers: ["Schlank und leicht", "Muskulös und athletisch", "Stabil und kräftig"], 
+        dosha: ["va", "pi", "ka"]
+    },
+    { 
+        question: "Wie ist dein Hauttyp?", 
+        answers: ["Trocken und rau", "Empfindlich und rötlich", "Weich und ölig"], 
+        dosha: ["va", "pi", "ka"]
+    }
 ];
 
-let currentQuestion = 0;
-let scores = { va: 0, pi: 0, ka: 0 };
+let currentQuestionIndex = 0;
+let answersSelected = [];
 
-function startTest() {
-    document.getElementById("intro").style.display = "none";
-    document.getElementById("quiz").style.display = "block";
+document.getElementById("start-test").addEventListener("click", () => {
+    document.getElementById("intro").classList.add("hidden");
+    document.getElementById("question-container").classList.remove("hidden");
     showQuestion();
-}
+});
 
 function showQuestion() {
-    if (currentQuestion >= questions.length) {
-        showResult();
-        return;
-    }
-    document.getElementById("question-text").innerText = questions[currentQuestion].question;
-    const answersContainer = document.getElementById("answers");
-    answersContainer.innerHTML = "";
+    const questionData = questions[currentQuestionIndex];
+    document.getElementById("question-title").textContent = questionData.question;
     
-    questions[currentQuestion].answers.forEach((answer, index) => {
-        let button = document.createElement("button");
-        button.innerText = answer;
-        button.onclick = () => {
-            scores[questions[currentQuestion].type[index]]++;
-            currentQuestion++;
-            showQuestion();
-        };
-        answersContainer.appendChild(button);
+    const answerButtons = document.getElementById("answer-buttons");
+    answerButtons.innerHTML = "";
+
+    questionData.answers.forEach((answer, index) => {
+        const button = document.createElement("button");
+        button.textContent = answer;
+        button.addEventListener("click", () => selectAnswer(index));
+        answerButtons.appendChild(button);
     });
+
+    updateSidebar();
 }
 
-function showResult() {
-    document.getElementById("quiz").style.display = "none";
-    document.getElementById("result").style.display = "block";
+function selectAnswer(index) {
+    answersSelected[currentQuestionIndex] = questions[currentQuestionIndex].dosha[index];
+    document.getElementById("next-question").classList.remove("hidden");
+}
 
-    let highestDosha = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-    let doshaText = highestDosha === "va" ? "Vata" : highestDosha === "pi" ? "Pitta" : "Kapha";
+document.getElementById("next-question").addEventListener("click", () => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        showQuestion();
+        document.getElementById("next-question").classList.add("hidden");
+    } else {
+        showResult();
+    }
+});
+
+function showResult() {
+    document.getElementById("question-container").classList.add("hidden");
+    document.getElementById("result-container").classList.remove("hidden");
+
+    const doshaCounts = { va: 0, pi: 0, ka: 0 };
+    answersSelected.forEach(dosha => doshaCounts[dosha]++);
     
-    document.getElementById("dosha-result").innerText = `Dein dominantes Dosha ist: ${doshaText}`;
+    let dominantDosha = Object.keys(doshaCounts).reduce((a, b) => doshaCounts[a] > doshaCounts[b] ? a : b);
+
+    const doshaNames = { va: "Vata", pi: "Pitta", ka: "Kapha" };
+    document.getElementById("result-text").textContent = `Dein dominantes Dosha ist: ${doshaNames[dominantDosha]}`;
+}
+
+function updateSidebar() {
+    const questionList = document.getElementById("question-list");
+    questionList.innerHTML = "";
+
+    questions.forEach((q, index) => {
+        const listItem = document.createElement("li");
+        listItem.textContent = `Frage ${index + 1}`;
+        listItem.classList.toggle("active", index === currentQuestionIndex);
+        questionList.appendChild(listItem);
+    });
 }
