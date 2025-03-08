@@ -1,0 +1,42 @@
+body {
+    background-color: #0f0f0f;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 20%;
+    background-color: #1a1a1a;
+    padding: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 5px 0;
+}
+
+.test-container {
+    width: 80%;
+    padding: 50px;
+}
+
+button {
+    background: white;
+    color: black;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    display: block;
+    margin-top: 20px;
+}
